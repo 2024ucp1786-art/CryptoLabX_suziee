@@ -1,0 +1,2 @@
+Security is important in modern computer systems.
+Encryption protects information from attackers.

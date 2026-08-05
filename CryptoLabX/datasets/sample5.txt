@@ -1,0 +1,2 @@
+Cryptanalysis focuses on analyzing encrypted data.
+This project will grow throughout the semester.

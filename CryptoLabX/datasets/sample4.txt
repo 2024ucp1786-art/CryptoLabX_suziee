@@ -1,0 +1,2 @@
+Python is used for developing security tools.
+Software engineering practices help build better projects.
