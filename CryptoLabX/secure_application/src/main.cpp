@@ -99,7 +99,7 @@ int login(vector<User>& users) {
     cin >> password;
     
     //showing sensetive data in logs - Sensetive Data Exposure In Logs
-    ofstream logFile("login.log",ios::app);
+    ofstream logFile("secure_application/outputs/login.log",ios::app);
     logFile << "Login attempt-Username: "
             <<username
             <<"Password: "
