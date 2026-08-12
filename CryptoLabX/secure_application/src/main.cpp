@@ -149,7 +149,7 @@ void bankingMenu(User& currentUser, vector<User>& users) {
             case 3:
                 manageBeneficiaries(currentUser);
                 break;
-
+            //Added switch accpount without auth - Broken Access Control
             case 4:
                 int accid;
 
@@ -239,12 +239,13 @@ void transferFunds(User& user) {
     cout << "Enter amount: Rs. ";
     cin >> amount;
 
-    if (amount <= 0) {
+    //Negative numbers arent checked before transfers - Insufficient Input Validation
+    // if (amount <= 0) {
 
-        cout << "Invalid amount.\n";
+    //     cout << "Invalid amount.\n";
 
-        return;
-    }
+    //     return;
+    // }
 
     if (amount > user.balance) {
 
