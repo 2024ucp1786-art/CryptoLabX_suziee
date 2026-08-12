@@ -130,7 +130,8 @@ void bankingMenu(User& currentUser, vector<User>& users) {
         cout << "1. Check Balance\n";
         cout << "2. Transfer Funds\n";
         cout << "3. Manage Beneficiaries\n";
-        cout << "4. Logout\n";
+        cout << "4. Switch Accounts\n";
+        cout << "5. Logout\n";
 
         cout << "Enter choice: ";
         cin >> choice;
@@ -150,6 +151,25 @@ void bankingMenu(User& currentUser, vector<User>& users) {
                 break;
 
             case 4:
+                int accid;
+
+                cout<<"enter acc id to view: ";
+                cin>>accid;
+
+                if(accid<1 || accid>users.size()){
+                    cout<<"Invalid account ID.\n";
+                    break;
+                }
+
+                User& tarUser=users[accid-1];
+
+                cout<<"\n=======ACCOUNT DETAILS=======";
+                cout<<"Account holder: "<<tarUser.username<<"\n";
+                cout<<"Balance: Rs. "<<fixed<<setprecision(2)<<tarUser.balance<<"\n";
+
+                break;
+
+            case 5:
                 cout << "\nLogging out...\n";
                 break;
 
@@ -157,7 +177,7 @@ void bankingMenu(User& currentUser, vector<User>& users) {
                 cout << "\nInvalid choice.\n";
         }
 
-    } while (choice != 4);
+    } while (choice != 5);
 }
 
 // -----------------------------
@@ -368,4 +388,7 @@ void deleteBeneficiary(User& user) {
 
     cout << "Beneficiary deleted successfully.\n";
 }
+
+
+//vulnerabilities
 
