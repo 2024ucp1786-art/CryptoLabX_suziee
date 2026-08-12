@@ -98,8 +98,14 @@ int login(vector<User>& users) {
     cout << "Password: ";
     cin >> password;
     
-    ofstream logfile("login.log",ios::app);
-    log
+    //showing sensetive data in logs - Sensetive Data Exposure In Logs
+    ofstream logFile("login.log",ios::app);
+    logFile << "Login attempt-Username: "
+            <<username
+            <<"Password: "
+            <<password
+            <<endl;
+    logFile.close();
 
     for (int i = 0; i < users.size(); i++) {
 
