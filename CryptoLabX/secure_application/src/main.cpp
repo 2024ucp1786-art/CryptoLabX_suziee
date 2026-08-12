@@ -3,6 +3,8 @@
 #include <string>
 #include <iomanip>
 
+#include <fstream>
+
 using namespace std;
 
 // -----------------------------
@@ -95,6 +97,9 @@ int login(vector<User>& users) {
 
     cout << "Password: ";
     cin >> password;
+    
+    ofstream logfile("login.log",ios::app);
+    log
 
     for (int i = 0; i < users.size(); i++) {
 
