@@ -161,7 +161,7 @@ void bankingMenu(User& currentUser, vector<User>& users) {
                 manageBeneficiaries(currentUser);
                 break;
             //Added switch accpount without auth - Broken Access Control
-            case 4:
+            case 4:{
                 int accid;
 
                 cout<<"enter acc id to view: ";
@@ -179,7 +179,7 @@ void bankingMenu(User& currentUser, vector<User>& users) {
                 cout<<"Balance: Rs. "<<fixed<<setprecision(2)<<tarUser.balance<<"\n";
 
                 break;
-
+            }
             case 5:
                 cout << "\nLogging out...\n";
                 break;
