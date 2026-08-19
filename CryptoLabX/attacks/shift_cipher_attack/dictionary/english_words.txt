@@ -1,0 +1,1 @@
+Cryptography protects information using encryption and keys. A shift cipher moves each letter by a fixed number of positions. It is simple but can be broken using brute force and frequency analysis.
