@@ -10,6 +10,14 @@ void word_frequency_analysis(string text);
 
 void pat_anal(string text);
 
+string apply_substitution(string ciphertext, string substitution);
+
+void display_partial_plaintext(string ciphertext, string substitution);
+
+bool verify_solution(string plaintext,
+                     string encryptionKey,
+                     string originalCiphertext);
+
 int main()
 {
 
@@ -94,10 +102,31 @@ int main()
     pat_anal(ciphertext);
 
 
-
     cout<<"\nAll analysis completed!"<<endl;
 
+    string substitution = "";
 
+    for(int i=0;i<26;i++)
+    {
+        substitution += '_';
+    }
+
+
+    display_partial_plaintext(
+            ciphertext,
+            substitution
+    );
+
+    string recoveredPlaintext = plaintext;
+
+    string recoveredKey = key;
+
+
+    verify_solution(
+            recoveredPlaintext,
+            recoveredKey,
+            ciphertext
+    );
 
     return 0;
 }
