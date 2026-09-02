@@ -7,7 +7,9 @@ string encryptText(string plain,string key){
     for(char c:plain){
         if(c>='a' and c<='z') c=c-'a'+'A';
         if(c>='A' and c<='Z') cipher+=key[c-'A'];
-        else cipher+=c;
+        else{
+            if(c==' ') cipher+=c;
+        }
     }
     return cipher;
 }
