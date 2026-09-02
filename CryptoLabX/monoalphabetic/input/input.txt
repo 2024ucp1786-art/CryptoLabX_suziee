@@ -1,1 +1,52 @@
-cc
+32 Introduction to Modern Cryptography
+Adversary A does:
+1. Output m0 = aa and m1 = ab.
+2. Upon receiving the challenge ciphertext c = c1c2, do the following: if
+c1 = c2 output 0; else output 1.
+Computation of Pr [PrivKeav
+A,Π = 1] is tedious but straightforward.
+Pr [PrivKeav
+A,Π = 1]
+= 1
+2 · Pr [PrivKeav
+A,Π = 1 | b = 0] + 1
+2 · Pr [PrivKeav
+A,Π = 1 | b = 1]
+= 1
+2 · Pr[A outputs 0 | b = 0] + 1
+2 · Pr[A outputs 1 | b = 1], (2.2)
+where b is the uniform bit determining which message gets encrypted. A
+outputs 0 if and only if the two characters of the ciphertext c = c1c2 are
+equal. When b = 0 (so m0 = aa is encrypted) then c1 = c2 if either (1) a key
+of period 1 is chosen, or (2) a key of period 2 is chosen, and both characters
+of the key are equal. The former occurs with probability 1
+2 , and the latter
+occurs with probability 1
+2 · 1
+26 . So
+Pr[A outputs 0 | b = 0] = 1
+2 + 1
+2 · 1
+26 ≈ 0.52.
+When b = 1 then c1 = c2 only if a key of period 2 is chosen and the first
+character of the key is one more than the second character of the key, which
+happens with probability 1
+2 · 1
+26 . So
+Pr[A outputs 1 | b = 1] = 1 − Pr[A outputs 0 | b = 1] = 1 − 1
+2 · 1
+26 ≈ 0.98.
+Plugging into Equation (2.2) then gives
+Pr [PrivKeav
+A,Π = 1] = 1
+2 ·
+( 1
+2 + 1
+2 · 1
+26 + 1 − 1
+2 · 1
+26
+)
+= 0.75 > 1
+2 ,
+and the scheme is not perfectly indistinguishable. 
