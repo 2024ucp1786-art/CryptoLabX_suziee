@@ -7,7 +7,6 @@
 
 using namespace std;
 
-
 // English letter frequencies
 double englishFrequency[26] =
 {
@@ -18,9 +17,6 @@ double englishFrequency[26] =
     0.028, 0.0098, 0.024, 0.0015, 0.020,
     0.00074
 };
-
-
-//index of coincidence
 
 double calculate_ic(const string& text)
 {
@@ -46,9 +42,6 @@ double calculate_ic(const string& text)
            (n * (n - 1));
 }
 
-
-//split ciphertext into groups
-
 vector<string>
 split_into_groups(
     const string& ciphertext,
@@ -64,9 +57,6 @@ split_into_groups(
     return groups;
 }
 
-
-//frequence analysis
-
 vector<int>
 frequency_analysis(const string& group)
 {
@@ -78,9 +68,6 @@ frequency_analysis(const string& group)
     return frequency;
 }
 
-
-//find caesar shift using chi sq test
-
 int find_shift(const string& group)
 {
     int n = group.size();
@@ -91,8 +78,6 @@ int find_shift(const string& group)
     int bestShift = 0;
     double bestScore = 1e100;
 
-
-    // Try all 26 possible shifts
     for (int shift = 0; shift < 26; shift++)
     {
         int observed[26] = {0};
@@ -104,7 +89,6 @@ int find_shift(const string& group)
 
             observed[value]++;
         }
-
 
         double score = 0.0;
 
@@ -122,7 +106,6 @@ int find_shift(const string& group)
             }
         }
 
-
         if (score < bestScore)
         {
             bestScore = score;
@@ -131,4 +114,37 @@ int find_shift(const string& group)
     }
 
     return bestShift;
+}
+
+// IC analysis for possible key lengths
+vector<pair<int, double>>
+ic_key_length_analysis(
+    const string& ciphertext,
+    int maxKeyLength)
+{
+    vector<pair<int, double>> results;
+
+    for (int keyLength = 1;
+         keyLength <= maxKeyLength;
+         keyLength++)
+    {
+        vector<string> groups =
+            split_into_groups(ciphertext, keyLength);
+
+        double totalIC = 0.0;
+
+        for (const string& group : groups)
+        {
+            totalIC += calculate_ic(group);
+        }
+
+        double averageIC =
+            totalIC / groups.size();
+
+        results.push_back(
+            {keyLength, averageIC}
+        );
+    }
+
+    return results;
 }

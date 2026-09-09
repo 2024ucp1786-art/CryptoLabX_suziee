@@ -14,10 +14,6 @@ using namespace std;
 
 int main()
 {
-    // --------------------------------------------------
-    // Read ciphertext from file
-    // --------------------------------------------------
-
     ifstream file("data/ciphertext.txt");
 
     if (!file)
@@ -33,10 +29,6 @@ int main()
 
     file.close();
 
-    // --------------------------------------------------
-    // Step 1: Preprocess ciphertext
-    // --------------------------------------------------
-
     ciphertext = clean_ciphertext(ciphertext);
 
     cout << "============================================\n";
@@ -50,11 +42,6 @@ int main()
          << ciphertext.length()
          << "\n";
 
-
-    // --------------------------------------------------
-    // Step 2: Kasiski Examination
-    // --------------------------------------------------
-
     cout << "\n============================================\n";
     cout << "             KASISKI ANALYSIS\n";
     cout << "============================================\n";
@@ -65,10 +52,27 @@ int main()
          << keyLength
          << "\n";
 
+    // IC analysis for bonus
+    cout << "\n============================================\n";
+    cout << "       INDEX OF COINCIDENCE ANALYSIS\n";
+    cout << "============================================\n";
 
-    // --------------------------------------------------
-    // Step 3: Split ciphertext into groups
-    // --------------------------------------------------
+    vector<pair<int, double>> icResults =
+        ic_key_length_analysis(ciphertext, 15);
+
+    cout << "\nKey Length\tAverage IC\n";
+
+    for (const auto& result : icResults)
+    {
+        cout << result.first
+             << "\t\t"
+             << result.second;
+
+        if (result.first == keyLength)
+            cout << "  <-- Kasiski Result";
+
+        cout << "\n";
+    }
 
     cout << "\n============================================\n";
     cout << "             CIPHERTEXT GROUPS\n";
@@ -87,11 +91,6 @@ int main()
              << groups[i]
              << "\n";
     }
-
-
-    // --------------------------------------------------
-    // Step 4: Frequency Analysis
-    // --------------------------------------------------
 
     cout << "\n============================================\n";
     cout << "             FREQUENCY ANALYSIS\n";
@@ -126,11 +125,6 @@ int main()
              << "\n";
     }
 
-
-    // --------------------------------------------------
-    // Step 5: Determine probable key
-    // --------------------------------------------------
-
     cout << "\n============================================\n";
     cout << "             KEY RECOVERY\n";
     cout << "============================================\n";
@@ -140,11 +134,6 @@ int main()
     cout << "\nRecovered Key: "
          << key
          << "\n";
-
-
-    // --------------------------------------------------
-    // Step 6: Decrypt ciphertext
-    // --------------------------------------------------
 
     cout << "\n============================================\n";
     cout << "             DECRYPTION\n";
@@ -157,11 +146,6 @@ int main()
     cout << plaintext
          << "\n";
 
-
-    // --------------------------------------------------
-    // Step 7: Re-encrypt plaintext
-    // --------------------------------------------------
-
     cout << "\n============================================\n";
     cout << "             VERIFICATION\n";
     cout << "============================================\n";
@@ -172,11 +156,6 @@ int main()
     cout << "\nRe-encrypted Ciphertext:\n";
     cout << regeneratedCiphertext
          << "\n";
-
-
-    // --------------------------------------------------
-    // Step 8: Verify
-    // --------------------------------------------------
 
     bool result =
         verify(
@@ -198,11 +177,6 @@ int main()
         cout << "Re-encryption does not match the original ciphertext.\n";
     }
 
-
-    // --------------------------------------------------
-    // Final Summary
-    // --------------------------------------------------
-
     cout << "\n============================================\n";
     cout << "                 SUMMARY\n";
     cout << "============================================\n";
@@ -223,4 +197,3 @@ int main()
 
     return 0;
 }
-
