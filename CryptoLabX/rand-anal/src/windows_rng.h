@@ -4,7 +4,7 @@
 #include <cstddef>
 #include <string>
 
-bool generateWindowsRandom(const std::string& outputFile,
+bool generateWindowsRandom(const std::string& filename,
                            std::size_t size);
 
 #endif

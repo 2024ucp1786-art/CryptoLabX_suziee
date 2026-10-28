@@ -1,46 +1,50 @@
+#include <iostream>
+#include <cstdlib>
+#include <string>
+#include <cstddef>
+
 #include "linux_rng.h"
 #include "openssl_rng.h"
 #include "windows_rng.h"
-#include "analysis.h"  
+#include "analysis.h"
 
-#include <cstddef>
-#include <filesystem>
-#include <iostream>
+int main()
+{
+    const std::size_t DATA_SIZE = 1024 * 1024; // 1 MB
 
-int main() {
-    constexpr std::size_t DATA_SIZE = 1024 * 1024;
-
+    std::cout << "Cryptographic RNG Analysis\n";
+    std::cout << "Data size: 1 MiB per source\n";
     std::cout << "====================================\n";
-    std::cout << " Cryptographic RNG Analysis\n";
-    std::cout << " Data size: 1 MiB per source\n";
-    std::cout << "====================================\n\n";
 
-    // Create the output directory if necessary.
-    std::error_code ec;
-    std::filesystem::create_directories("data", ec);
-
-    if (ec) {
-        std::cerr << "Error creating data directory: "
-                  << ec.message() << '\n';
+    // Create output directories on Linux
+    if (std::system("mkdir -p data results") != 0)
+    {
+        std::cerr << "Error: Could not create output directories.\n";
         return 1;
     }
 
-    bool linuxOK = generateLinuxRandom(
-        "data/linux_urandom.bin", DATA_SIZE
-    );
+    // Generate random data
+    bool linuxOK =
+        generateLinuxRandom("data/linux_urandom.bin", DATA_SIZE);
 
-    bool opensslOK = generateOpenSSLRandom(
-        "data/openssl_rand.bin", DATA_SIZE
-    );
+    bool opensslOK =
+        generateOpenSSLRandom("data/openssl_rand.bin", DATA_SIZE);
 
-    // On Linux, this reports that Windows CNG must be run on Windows.
-    bool windowsOK = generateWindowsRandom(
-        "data/windows_cng.bin", DATA_SIZE
-    );
+#ifdef _WIN32
+    bool windowsOK =
+        generateWindowsRandom("data/windows_cng.bin", DATA_SIZE);
+#endif
 
+#ifndef _WIN32
+    std::cout << "\nWindows CNG skipped: run this component on Windows.\n";
+#endif
+
+    // Display generation results
     std::cout << "\n========== Generation Summary ==========\n";
+
     std::cout << "Linux /dev/urandom: "
               << (linuxOK ? "OK" : "FAILED") << '\n';
+
     std::cout << "OpenSSL rand: "
               << (opensslOK ? "OK" : "FAILED") << '\n';
 
@@ -51,33 +55,44 @@ int main() {
     std::cout << "Windows CNG: Run separately on Windows\n";
 #endif
 
-    if (!linuxOK || !opensslOK) {
+    if (!linuxOK || !opensslOK)
+    {
+        std::cerr << "\nError: Random data generation failed.\n";
         return 1;
     }
 
+    // Analyze generated files
     std::cout << "\n========== Statistical Analysis ==========\n";
 
-    analyze_file(
-        "data/linux_urandom.bin",
-        "results/linux_stats.csv"
-    );
+    try
+    {
+        analyze_file(
+            "data/linux_urandom.bin",
+            "results/linux_stats.csv"
+        );
 
-    analyze_file(
-        "data/openssl_rand.bin",
-        "results/openssl_stats.csv"
-    );
+        analyze_file(
+            "data/openssl_rand.bin",
+            "results/openssl_stats.csv"
+        );
 
 #ifdef _WIN32
-    if (windowsOK) {
-        analyze_file(
-            "data/windows_cng.bin",
-            "results/windows_stats.csv"
-        );
-    }
+        if (windowsOK)
+        {
+            analyze_file(
+                "data/windows_cng.bin",
+                "results/windows_stats.csv"
+            );
+        }
 #endif
+    }
+    catch (const std::exception& e)
+    {
+        std::cerr << "Analysis error: " << e.what() << '\n';
+        return 1;
+    }
 
     std::cout << "\nAnalysis complete. Check the results/ folder.\n";
-
 
     return 0;
 }

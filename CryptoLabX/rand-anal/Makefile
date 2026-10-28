@@ -6,7 +6,8 @@ TARGET = rand_analysis
 SOURCES = src/main.cpp \
           src/linux_rng.cpp \
           src/openssl_rng.cpp \
-          src/windows_rng.cpp
+          src/windows_rng.cpp \
+          src/analysis.cpp
 
 all: $(TARGET)
 
