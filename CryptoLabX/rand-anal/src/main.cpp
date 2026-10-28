@@ -1,6 +1,7 @@
 #include "linux_rng.h"
 #include "openssl_rng.h"
 #include "windows_rng.h"
+#include "analysis.h"  
 
 #include <cstddef>
 #include <filesystem>
@@ -53,6 +54,30 @@ int main() {
     if (!linuxOK || !opensslOK) {
         return 1;
     }
+
+    std::cout << "\n========== Statistical Analysis ==========\n";
+
+    analyze_file(
+        "data/linux_urandom.bin",
+        "results/linux_stats.csv"
+    );
+
+    analyze_file(
+        "data/openssl_rand.bin",
+        "results/openssl_stats.csv"
+    );
+
+#ifdef _WIN32
+    if (windowsOK) {
+        analyze_file(
+            "data/windows_cng.bin",
+            "results/windows_stats.csv"
+        );
+    }
+#endif
+
+    std::cout << "\nAnalysis complete. Check the results/ folder.\n";
+
 
     return 0;
 }
